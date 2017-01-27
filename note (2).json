@@ -1,0 +1,548 @@
+{
+  "paragraphs": [
+    {
+      "text": "import org.apache.spark.streaming._\nimport org.apache.spark.streaming.twitter._\nimport org.apache.spark.storage.StorageLevel\nimport scala.io.Source\nimport scala.collection.mutable.HashMap\nimport java.io.File\nimport org.apache.log4j.Logger\nimport org.apache.log4j.Level\nimport sys.process.stringSeqToProcess\n",
+      "dateUpdated": "Jan 26, 2017 7:37:11 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485469827585_-1592969574",
+      "id": "20170126-173027_1019989910",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\nimport org.apache.spark.streaming._\n\nimport org.apache.spark.streaming.twitter._\n\nimport org.apache.spark.storage.StorageLevel\n\nimport scala.io.Source\n\nimport scala.collection.mutable.HashMap\n\nimport java.io.File\n\nimport org.apache.log4j.Logger\n\nimport org.apache.log4j.Level\n\nimport sys.process.stringSeqToProcess\n"
+      },
+      "dateCreated": "Jan 26, 2017 5:30:27 AM",
+      "dateStarted": "Jan 26, 2017 7:37:11 PM",
+      "dateFinished": "Jan 26, 2017 7:37:16 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** Configures the Oauth Credentials for accessing Twitter */\ndef configureTwitterCredentials(apiKey: String, apiSecret: String, accessToken: String, accessTokenSecret: String) {\n  val configs \u003d new HashMap[String, String] ++\u003d Seq(\n    \"apiKey\" -\u003e apiKey, \"apiSecret\" -\u003e apiSecret, \"accessToken\" -\u003e accessToken, \"accessTokenSecret\" -\u003e accessTokenSecret)\n  println(\"Configuring Twitter OAuth\")\n  configs.foreach{ case(key, value) \u003d\u003e\n    if (value.trim.isEmpty) {\n      throw new Exception(\"Error setting authentication - value for \" + key + \" not set\")\n    }\n    val fullKey \u003d \"twitter4j.oauth.\" + key.replace(\"api\", \"consumer\")\n    System.setProperty(fullKey, value.trim)\n    println(\"\\tProperty \" + fullKey + \" set as [\" + value.trim + \"]\")\n  }\n  println()\n}\n\n",
+      "dateUpdated": "Jan 26, 2017 7:37:29 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485472814392_355543646",
+      "id": "20170126-182014_2091493586",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\nconfigureTwitterCredentials: (apiKey: String, apiSecret: String, accessToken: String, accessTokenSecret: String)Unit\n"
+      },
+      "dateCreated": "Jan 26, 2017 6:20:14 AM",
+      "dateStarted": "Jan 26, 2017 7:37:29 PM",
+      "dateFinished": "Jan 26, 2017 7:37:31 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Configure Twitter credentials\nval apiKey \u003d \"ExGEfwkCmKTnINTic11v7wJEb\"\nval apiSecret \u003d \"OgOrOedChOyeunV86bzHi3BuknTMW19Y8IVwtDm4QIM4t3V6Ei\"\nval accessToken \u003d \"824754411880710144-rriTEzEswHX71YoObTAPuaRVE51vHhn\"\nval accessTokenSecret \u003d \"gbnq7lOra8X00nwbXRF4VqTrfQVawe01Yl0Ved6KW9i56\"\nconfigureTwitterCredentials(apiKey, apiSecret, accessToken, accessTokenSecret)\n\n",
+      "dateUpdated": "Jan 26, 2017 7:37:34 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485474904056_-383001863",
+      "id": "20170126-185504_1844273599",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\napiKey: String \u003d ExGEfwkCmKTnINTic11v7wJEb\n\napiSecret: String \u003d OgOrOedChOyeunV86bzHi3BuknTMW19Y8IVwtDm4QIM4t3V6Ei\n\naccessToken: String \u003d 824754411880710144-rriTEzEswHX71YoObTAPuaRVE51vHhn\n\naccessTokenSecret: String \u003d gbnq7lOra8X00nwbXRF4VqTrfQVawe01Yl0Ved6KW9i56\nConfiguring Twitter OAuth\n\tProperty twitter4j.oauth.consumerKey set as [ExGEfwkCmKTnINTic11v7wJEb]\n\tProperty twitter4j.oauth.accessToken set as [824754411880710144-rriTEzEswHX71YoObTAPuaRVE51vHhn]\n\tProperty twitter4j.oauth.consumerSecret set as [OgOrOedChOyeunV86bzHi3BuknTMW19Y8IVwtDm4QIM4t3V6Ei]\n\tProperty twitter4j.oauth.accessTokenSecret set as [gbnq7lOra8X00nwbXRF4VqTrfQVawe01Yl0Ved6KW9i56]\n\n"
+      },
+      "dateCreated": "Jan 26, 2017 6:55:04 AM",
+      "dateStarted": "Jan 26, 2017 7:37:34 PM",
+      "dateFinished": "Jan 26, 2017 7:37:37 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.{ SparkConf, SparkContext}\nimport org.apache.spark.streaming._\nimport org.apache.spark.streaming.twitter._\nimport org.apache.spark.SparkContext._",
+      "dateUpdated": "Jan 26, 2017 7:37:39 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485476139152_-1792923813",
+      "id": "20170126-191539_1200333502",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\nimport org.apache.spark.{SparkConf, SparkContext}\n\nimport org.apache.spark.streaming._\n\nimport org.apache.spark.streaming.twitter._\n\nimport org.apache.spark.SparkContext._\n"
+      },
+      "dateCreated": "Jan 26, 2017 7:15:39 AM",
+      "dateStarted": "Jan 26, 2017 7:37:39 PM",
+      "dateFinished": "Jan 26, 2017 7:37:41 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val ssc \u003d new StreamingContext(sc, Seconds(2))\n\nval tweets \u003d TwitterUtils.createStream(ssc, None)\nval twt \u003d tweets.window(Seconds(10))\n\n",
+      "dateUpdated": "Jan 26, 2017 7:37:44 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485474984469_1632636328",
+      "id": "20170126-185624_271737165",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\nssc: org.apache.spark.streaming.StreamingContext \u003d org.apache.spark.streaming.StreamingContext@52681750\n\ntweets: org.apache.spark.streaming.dstream.ReceiverInputDStream[twitter4j.Status] \u003d org.apache.spark.streaming.twitter.TwitterInputDStream@1875effc\n\ntwt: org.apache.spark.streaming.dstream.DStream[twitter4j.Status] \u003d org.apache.spark.streaming.dstream.WindowedDStream@25557ea9\n"
+      },
+      "dateCreated": "Jan 26, 2017 6:56:24 AM",
+      "dateStarted": "Jan 26, 2017 7:37:44 PM",
+      "dateFinished": "Jan 26, 2017 7:37:47 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val sqlContext\u003d new org.apache.spark.sql.SQLContext(sc)\nimport sqlContext.implicits._",
+      "dateUpdated": "Jan 26, 2017 7:37:49 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485476227235_419671877",
+      "id": "20170126-191707_509592814",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\nwarning: there was one deprecation warning; re-run with -deprecation for details\n\nsqlContext: org.apache.spark.sql.SQLContext \u003d org.apache.spark.sql.SQLContext@654acb31\n\nimport sqlContext.implicits._\n"
+      },
+      "dateCreated": "Jan 26, 2017 7:17:07 AM",
+      "dateStarted": "Jan 26, 2017 7:37:49 PM",
+      "dateFinished": "Jan 26, 2017 7:37:52 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "\ncase class Tweet(createdAt:Long, text:String)\n\nval tweet \u003d twt.map(status\u003d\u003e\n  Tweet(status.getCreatedAt().getTime()/1000, status.getText())\n)\n",
+      "dateUpdated": "Jan 26, 2017 7:37:55 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485475040733_-930283365",
+      "id": "20170126-185720_94969002",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\ndefined class Tweet\n\ntweet: org.apache.spark.streaming.dstream.DStream[Tweet] \u003d org.apache.spark.streaming.dstream.MappedDStream@2964596f\n"
+      },
+      "dateCreated": "Jan 26, 2017 6:57:20 AM",
+      "dateStarted": "Jan 26, 2017 7:37:55 PM",
+      "dateFinished": "Jan 26, 2017 7:37:58 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "tweet.foreachRDD(rdd\u003d\u003e\n  // Below line works only in spark 1.3.0.\n  // For spark 1.1.x and spark 1.2.x,\n  // use rdd.registerTempTable(\"tweets\") instead.\n  rdd.toDF().registerTempTable(\"tweets\")\n)\n",
+      "dateUpdated": "Jan 26, 2017 7:38:01 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485476315178_-1840789207",
+      "id": "20170126-191835_9383769",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\nwarning: there was one deprecation warning; re-run with -deprecation for details\n"
+      },
+      "dateCreated": "Jan 26, 2017 7:18:35 AM",
+      "dateStarted": "Jan 26, 2017 7:38:01 PM",
+      "dateFinished": "Jan 26, 2017 7:38:03 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "twt.print",
+      "dateUpdated": "Jan 26, 2017 7:38:06 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485477119319_822035504",
+      "id": "20170126-193159_117383871",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jan 26, 2017 7:31:59 AM",
+      "dateStarted": "Jan 26, 2017 7:38:06 PM",
+      "dateFinished": "Jan 26, 2017 7:38:08 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "ssc.start()",
+      "dateUpdated": "Jan 26, 2017 7:40:06 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485477196694_-1037547875",
+      "id": "20170126-193316_1967291336",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jan 26, 2017 7:33:16 AM",
+      "dateStarted": "Jan 26, 2017 7:40:06 PM",
+      "dateFinished": "Jan 26, 2017 7:40:07 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql select * from tweets where text like \u0027%girl%\u0027 limit 10",
+      "dateUpdated": "Jan 26, 2017 7:44:03 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "createdAt",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "text",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "createdAt",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "text",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485477219285_1578021121",
+      "id": "20170126-193339_1209832934",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "createdAt\ttext\n1485477833\t@MeqanKylene imma text you \" girl you a auntie 😂😩 \"\n1485477836\t@BetgirlAD she did that to me too in a super uncomfortable and sorta manipulative kinda way\n1485477841\t#free sex toys videos black girl pussy pic https://t.co/jgZjj34CUn\n1485477842\tRT @MarioBautistaMB: Déjame robarte un rato girl 😏\n"
+      },
+      "dateCreated": "Jan 26, 2017 7:33:39 AM",
+      "dateStarted": "Jan 26, 2017 7:44:04 PM",
+      "dateFinished": "Jan 26, 2017 7:44:04 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql select createdAt, count(1) from tweets group by createdAt order by createdAt",
+      "dateUpdated": "Jan 26, 2017 7:41:04 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485477541229_-1529784569",
+      "id": "20170126-193901_2109593084",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "createdAt\tcount(1)\n1485477653\t44\n1485477654\t41\n1485477655\t55\n1485477656\t43\n1485477657\t37\n1485477658\t38\n1485477659\t32\n1485477660\t44\n1485477661\t43\n1485477662\t38\n"
+      },
+      "dateCreated": "Jan 26, 2017 7:39:01 PM",
+      "dateStarted": "Jan 26, 2017 7:41:04 PM",
+      "dateFinished": "Jan 26, 2017 7:41:06 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "def sentiment(s:String) : String \u003d {\n    val positive \u003d Array(\"like\", \"love\", \"good\", \"great\", \"happy\", \"cool\", \"the\", \"one\", \"that\")\n    val negative \u003d Array(\"hate\", \"bad\", \"stupid\", \"is\")\n\n    var st \u003d 0;\n\n    val words \u003d s.split(\" \")    \n    positive.foreach(p \u003d\u003e\n        words.foreach(w \u003d\u003e\n            if(p\u003d\u003dw) st \u003d st+1\n        )\n    )\n\n    negative.foreach(p\u003d\u003e\n        words.foreach(w\u003d\u003e\n            if(p\u003d\u003dw) st \u003d st-1\n        )\n    )\n    if(st\u003e0)\n        \"positivie\"\n    else if(st\u003c0)\n        \"negative\"\n    else\n        \"neutral\"\n}\n\n// Below line works only in spark 1.3.0.\n// For spark 1.1.x and spark 1.2.x,\n// use sqlc.registerFunction(\"sentiment\", sentiment _) instead.\nsqlc.udf.register(\"sentiment\", sentiment _)",
+      "dateUpdated": "Jan 26, 2017 7:44:43 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485477664424_291432834",
+      "id": "20170126-194104_248838157",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "\nsentiment: (s: String)String\n\nres20: org.apache.spark.sql.expressions.UserDefinedFunction \u003d UserDefinedFunction(\u003cfunction1\u003e,StringType,Some(List(StringType)))\n"
+      },
+      "dateCreated": "Jan 26, 2017 7:41:04 PM",
+      "dateStarted": "Jan 26, 2017 7:44:43 PM",
+      "dateFinished": "Jan 26, 2017 7:44:46 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql select sentiment(text), count(1) from tweets where text like \u0027%girl%\u0027 group by sentiment(text)",
+      "dateUpdated": "Jan 26, 2017 7:45:26 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485477883819_2088118776",
+      "id": "20170126-194443_2099189810",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "UDF(text)\tcount(1)\nneutral\t4\npositivie\t1\n"
+      },
+      "dateCreated": "Jan 26, 2017 7:44:43 PM",
+      "dateStarted": "Jan 26, 2017 7:45:26 PM",
+      "dateFinished": "Jan 26, 2017 7:45:27 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "",
+      "dateUpdated": "Jan 26, 2017 7:45:37 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1485477926448_-1247022608",
+      "id": "20170126-194526_1991018904",
+      "dateCreated": "Jan 26, 2017 7:45:26 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Jan26-DataLoad",
+  "id": "2C8MT22JR",
+  "angularObjects": {
+    "2C96W7CEY:shared_process": [],
+    "2CA7TUGT8:shared_process": [],
+    "2C9KJ7T2P:shared_process": [],
+    "2C7YVC3BE:shared_process": [],
+    "2CA73UQ8N:shared_process": [],
+    "2C8EXVWD8:shared_process": [],
+    "2C7PY6427:shared_process": [],
+    "2CABBP4EK:2C8MT22JR": [],
+    "2C6V78DA1:shared_process": [],
+    "2C9NXT2WJ:shared_process": [],
+    "2C9817H7Q:shared_process": [],
+    "2C8GNK97W:shared_process": [],
+    "2C6NPXPF7:shared_process": [],
+    "2C8QPGC1C:shared_process": [],
+    "2C79JPDT2:shared_process": [],
+    "2C6Y42Z5Z:shared_process": [],
+    "2C9DZG8HC:shared_process": [],
+    "2C87RFKVK:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
