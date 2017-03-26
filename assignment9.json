@@ -1,0 +1,862 @@
+{
+  "paragraphs": [
+    {
+      "title": "Performance Analysis",
+      "text": "    %spark.r\n# Lines of code : 185 lines\n# Bottleneck : Neural network technique takes a lot of time to learn the algorithm for one particular \n#              model.\n# Solution : Parameters like \"Threshold\" and \"Stepmax\" were used to reduce this issue.\n# Optimization : Instead of normalizing each row in every dataset manually and repeating the same code, \n#                used loops and conditions for code effeciency. \n#                Also used the same level of optimization while predicting weights\n",
+      "dateUpdated": "Mar 25, 2017 9:15:14 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490486745183_55909357",
+      "id": "20170325-200545_213811538",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Mar 25, 2017 8:05:45 PM",
+      "dateStarted": "Mar 25, 2017 8:38:20 PM",
+      "dateFinished": "Mar 25, 2017 8:38:20 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\r\n\r\nsmall_cap_stock \u003c- read.csv(\"/home/scarface/Desktop/sem-3/capstone/madhu/stockPerform/iwm.csv\", header\u003dTRUE)\r\nlarge_cap_stock \u003c- read.csv(\"/home/scarface/Desktop/sem-3/capstone/madhu/stockPerform/spy.csv\", header\u003dTRUE)\r\n\r\nView(small_cap_stock)\r\nView(large_cap_stock)\r\ntypeof(large_cap_stock$Date)",
+      "dateUpdated": "Mar 25, 2017 8:05:35 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506724_-865265851",
+      "id": "20170228-001626_735085276",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] “integer”"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 4:42:23 PM",
+      "dateFinished": "Mar 25, 2017 4:42:24 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\nlarge_cap_stock2000 \u003c- subset(large_cap_stock, large_cap_stock$Date \u003e\u003d \"2017-02-07\")\nlarge_cap_stock2000",
+      "dateUpdated": "Mar 25, 2017 8:06:52 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506727_-864881102",
+      "id": "20170228-002533_974693512",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] Date      Open      High      Low       Close     Volume    Adj.Close\n\u0026lt;0 rows\u0026gt; (or 0-length row.names)"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 4:43:26 PM",
+      "dateFinished": "Mar 25, 2017 4:43:26 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\narqdata \u003c- read.csv(file \u003d \"/home/scarface/Desktop/sem-3/capstone/madhu/ARQ_Data.csv\", header\u003dTRUE)\nsave(arqdata, file\u003d\"arq.rdata\")\nload(\"arq.rdata\")\nnrow(arqdata)",
+      "dateUpdated": "Mar 25, 2017 8:06:55 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506728_-866804846",
+      "id": "20170227-222212_907089107",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] 89206"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 4:44:22 PM",
+      "dateFinished": "Mar 25, 2017 4:44:42 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\nView(arqdata)\nt(names(arqdata))\narq[72]\n#Considering the column price with data\narqdata_na \u003c- subset(arqdata, arqdata$price !\u003d \"NA\")\nView(arqdata_na)",
+      "dateUpdated": "Mar 25, 2017 8:07:04 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/r",
+        "graph": {
+          "mode": "table",
+          "height": 484.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506728_-866804846",
+      "id": "20170227-224017_1637771087",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1,] “ticker” “dimension” “calendardate” “datekey” “reportperiod” “accoci”\n     [,7]     [,8]        [,9]      [,10]      [,11]           [,12] \n[1,] “assets” “assetsavg” “assetsc” “assetsnc” “assetturnover” “bvps”\n     [,13]   [,14]     [,15]        [,16] [,17]          [,18] [,19] \n[1,] “capex” “cashneq” “cashnequsd” “cor” “currentratio” “de”  “debt”\n     [,20]     [,21]     [,22]      [,23] [,24]  [,25]    [,26]\u003cbr /\u003e\n[1,] “debtusd” “depamor” “divyield” “dps” “ebit” “ebitda” “ebitdamargin”\n     [,27]       [,28]     [,29] [,30] [,31]    [,32]    [,33]\u003cbr /\u003e\n[1,] “ebitdausd” “ebitusd” “ebt” “eps” “epsdil” “epsusd” “equity”\n     [,34]       [,35]       [,36] [,37]    [,38]      [,39] [,40]\u003cbr /\u003e\n[1,] “equityavg” “equityusd” “ev”  “evebit” “evebitda” “fcf” “fcfps”\n     [,41]   [,42] [,43]         [,44]         [,45]    [,46]\u003cbr /\u003e\n[1,] “fxusd” “gp”  “grossmargin” “intangibles” “intexp” “invcap”\n     [,47]       [,48]       [,49]         [,50]          [,51]\u003cbr /\u003e\n[1,] “invcapavg” “inventory” “liabilities” “liabilitiesc” “liabilitiesnc”\n     [,52]       [,53] [,54]       [,55]     [,56]    [,57]  [,58]  [,59] \n[1,] “marketcap” “ncf” “ncfcommon” “ncfdebt” “ncfdiv” “ncff” “ncfi” “ncfo”\n     [,60]  [,61]    [,62]       [,63]          [,64]       [,65]\u003cbr /\u003e\n[1,] “ncfx” “netinc” “netinccmn” “netinccmnusd” “netincdis” “netmargin”\n     [,66]      [,67]         [,68] [,69] [,70] [,71]       [,72]   [,73]\n[1,] “payables” “payoutratio” “pb”  “pe”  “pe1” “prefdivis” “price” “ps” \n     [,74] [,75]         [,76]     [,77]     [,78]        [,79] [,80]\n[1,] “ps1” “receivables” “retearn” “revenue” “revenueusd” “rnd” “roa”\n     [,81] [,82]  [,83] [,84]  [,85]         [,86]       [,87]\u003cbr /\u003e\n[1,] “roe” “roic” “ros” “sgna” “sharefactor” “sharesbas” “shareswa”\n     [,88]         [,89] [,90]       [,91]    [,92]   [,93]\u003cbr /\u003e\n[1,] “shareswadil” “sps” “tangibles” “taxexp” “tbvps” “workingcapital”"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 4:46:00 PM",
+      "dateFinished": "Mar 25, 2017 4:47:16 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n###################################Data_File - with ARQ listings########################################\nreturn \u003c- vector();\nfor (i in 2:length(arqdata_na[,1]))\n{\n  if (identical(arqdata_na[i,1],arqdata_na[i-1,1]))\n  {\n    #    return[i] \u003d ((arqdata[i,72] / arqdata[i-1,72]) - 1);\n    return[i] \u003d (arqdata_na[i,72] / arqdata_na[i-1,72]);\n  }\n  else\n  {\n    return[i] \u003d 0;\n  }\n}\n\nreturn[1]\u003d0;\n",
+      "dateUpdated": "Mar 25, 2017 8:07:12 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506728_-866804846",
+      "id": "20170227-224246_1853407931",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 4:53:28 PM",
+      "dateFinished": "Mar 25, 2017 4:53:46 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n#adding return to arqdata dataset\narqdata_returns \u003c- cbind(arqdata_na,return)\nView(arqdata_returns)\nt(names(arqdata_returns))\nView(arqdata_returns)",
+      "dateUpdated": "Mar 25, 2017 8:07:17 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506729_-867189595",
+      "id": "20170227-224453_589588382",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1,] “ticker” “dimension” “calendardate” “datekey” “reportperiod” “accoci”\n     [,7]     [,8]        [,9]      [,10]      [,11]           [,12] \n[1,] “assets” “assetsavg” “assetsc” “assetsnc” “assetturnover” “bvps”\n     [,13]   [,14]     [,15]        [,16] [,17]          [,18] [,19] \n[1,] “capex” “cashneq” “cashnequsd” “cor” “currentratio” “de”  “debt”\n     [,20]     [,21]     [,22]      [,23] [,24]  [,25]    [,26]\u003cbr /\u003e\n[1,] “debtusd” “depamor” “divyield” “dps” “ebit” “ebitda” “ebitdamargin”\n     [,27]       [,28]     [,29] [,30] [,31]    [,32]    [,33]\u003cbr /\u003e\n[1,] “ebitdausd” “ebitusd” “ebt” “eps” “epsdil” “epsusd” “equity”\n     [,34]       [,35]       [,36] [,37]    [,38]      [,39] [,40]\u003cbr /\u003e\n[1,] “equityavg” “equityusd” “ev”  “evebit” “evebitda” “fcf” “fcfps”\n     [,41]   [,42] [,43]         [,44]         [,45]    [,46]\u003cbr /\u003e\n[1,] “fxusd” “gp”  “grossmargin” “intangibles” “intexp” “invcap”\n     [,47]       [,48]       [,49]         [,50]          [,51]\u003cbr /\u003e\n[1,] “invcapavg” “inventory” “liabilities” “liabilitiesc” “liabilitiesnc”\n     [,52]       [,53] [,54]       [,55]     [,56]    [,57]  [,58]  [,59] \n[1,] “marketcap” “ncf” “ncfcommon” “ncfdebt” “ncfdiv” “ncff” “ncfi” “ncfo”\n     [,60]  [,61]    [,62]       [,63]          [,64]       [,65]\u003cbr /\u003e\n[1,] “ncfx” “netinc” “netinccmn” “netinccmnusd” “netincdis” “netmargin”\n     [,66]      [,67]         [,68] [,69] [,70] [,71]       [,72]   [,73]\n[1,] “payables” “payoutratio” “pb”  “pe”  “pe1” “prefdivis” “price” “ps” \n     [,74] [,75]         [,76]     [,77]     [,78]        [,79] [,80]\n[1,] “ps1” “receivables” “retearn” “revenue” “revenueusd” “rnd” “roa”\n     [,81] [,82]  [,83] [,84]  [,85]         [,86]       [,87]\u003cbr /\u003e\n[1,] “roe” “roic” “ros” “sgna” “sharefactor” “sharesbas” “shareswa”\n     [,88]         [,89] [,90]       [,91]    [,92]   [,93]\u003cbr /\u003e\n[1,] “shareswadil” “sps” “tangibles” “taxexp” “tbvps” “workingcapital”\n     [,94]\u003cbr /\u003e\n[1,] “return”"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 4:54:12 PM",
+      "dateFinished": "Mar 25, 2017 4:55:27 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n#Indicators listed.\n#Calculating ratios by choice 1.SGNA/REVENUE (sgnamargin) and 2.ebitmargin\nsgnamargin \u003d arqdata_returns$sgna / arqdata_returns$revenue\nebitmargin \u003d arqdata_returns$ebit / arqdata_returns$revenue\n\n#adding ratios by choice to dataset - arqdata_returns\narqdata_returns_ratios \u003c- cbind(arqdata_returns, sgnamargin,ebitmargin)\nView(arqdata_returns_ratios)\nt(names(arqdata_returns_ratios))\n",
+      "dateUpdated": "Mar 25, 2017 8:07:25 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506729_-867189595",
+      "id": "20170227-230304_978317584",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1,] “ticker” “dimension” “calendardate” “datekey” “reportperiod” “accoci”\n     [,7]     [,8]        [,9]      [,10]      [,11]           [,12] \n[1,] “assets” “assetsavg” “assetsc” “assetsnc” “assetturnover” “bvps”\n     [,13]   [,14]     [,15]        [,16] [,17]          [,18] [,19] \n[1,] “capex” “cashneq” “cashnequsd” “cor” “currentratio” “de”  “debt”\n     [,20]     [,21]     [,22]      [,23] [,24]  [,25]    [,26]\u003cbr /\u003e\n[1,] “debtusd” “depamor” “divyield” “dps” “ebit” “ebitda” “ebitdamargin”\n     [,27]       [,28]     [,29] [,30] [,31]    [,32]    [,33]\u003cbr /\u003e\n[1,] “ebitdausd” “ebitusd” “ebt” “eps” “epsdil” “epsusd” “equity”\n     [,34]       [,35]       [,36] [,37]    [,38]      [,39] [,40]\u003cbr /\u003e\n[1,] “equityavg” “equityusd” “ev”  “evebit” “evebitda” “fcf” “fcfps”\n     [,41]   [,42] [,43]         [,44]         [,45]    [,46]\u003cbr /\u003e\n[1,] “fxusd” “gp”  “grossmargin” “intangibles” “intexp” “invcap”\n     [,47]       [,48]       [,49]         [,50]          [,51]\u003cbr /\u003e\n[1,] “invcapavg” “inventory” “liabilities” “liabilitiesc” “liabilitiesnc”\n     [,52]       [,53] [,54]       [,55]     [,56]    [,57]  [,58]  [,59] \n[1,] “marketcap” “ncf” “ncfcommon” “ncfdebt” “ncfdiv” “ncff” “ncfi” “ncfo”\n     [,60]  [,61]    [,62]       [,63]          [,64]       [,65]\u003cbr /\u003e\n[1,] “ncfx” “netinc” “netinccmn” “netinccmnusd” “netincdis” “netmargin”\n     [,66]      [,67]         [,68] [,69] [,70] [,71]       [,72]   [,73]\n[1,] “payables” “payoutratio” “pb”  “pe”  “pe1” “prefdivis” “price” “ps” \n     [,74] [,75]         [,76]     [,77]     [,78]        [,79] [,80]\n[1,] “ps1” “receivables” “retearn” “revenue” “revenueusd” “rnd” “roa”\n     [,81] [,82]  [,83] [,84]  [,85]         [,86]       [,87]\u003cbr /\u003e\n[1,] “roe” “roic” “ros” “sgna” “sharefactor” “sharesbas” “shareswa”\n     [,88]         [,89] [,90]       [,91]    [,92]   [,93]\u003cbr /\u003e\n[1,] “shareswadil” “sps” “tangibles” “taxexp” “tbvps” “workingcapital”\n     [,94]    [,95]        [,96]\u003cbr /\u003e\n[1,] “return” “sgnamargin” “ebitmargin”"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 4:56:15 PM",
+      "dateFinished": "Mar 25, 2017 4:56:57 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n#Consider the 20 indicators chosen\n#factors required in the dataset\narq_data_factors \u003c- arqdata_returns_ratios[c(1,3,77,16,42,84,24,43,95,96,45,91,61,29,30,65,7,9,50,17,93,13,94)]\nhead(arq_data_factors)\n\n#17 lines",
+      "dateUpdated": "Mar 25, 2017 8:47:07 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506729_-867189595",
+      "id": "20170227-230844_998262779",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "ticker calendardate   revenue      cor       gp     sgna     ebit\n1      A   31-03-2011 1.519e+09 7.03e+08 8.16e+08 4.46e+08 2.21e+08\n2      A   30-06-2011 1.677e+09 7.77e+08 9.00e+08 4.69e+08 2.80e+08\n3      A   30-09-2011 1.691e+09 7.99e+08 8.92e+08 4.49e+08 3.01e+08\n4      A   31-12-2011 1.728e+09 8.07e+08 9.21e+08 4.45e+08 3.16e+08\n5      A   31-03-2012 1.635e+09 7.61e+08 8.74e+08 4.41e+08 2.82e+08\n6      A   30-06-2012 1.733e+09 8.15e+08 9.18e+08 4.52e+08 3.18e+08\n  grossmargin sgnamargin ebitmargin  intexp   taxexp   netinc      ebt\n1       0.537  0.2936142  0.1454905 2.3e+07  5.0e+06 1.93e+08 1.98e+08\n2       0.537  0.2796661  0.1669648 2.0e+07  6.0e+07 2.00e+08 2.60e+08\n3       0.527  0.2655234  0.1780012 2.0e+07 -4.9e+07 3.30e+08 2.81e+08\n4       0.533  0.2575231  0.1828704 2.3e+07  4.0e+06 2.89e+08 2.93e+08\n5       0.535  0.2697248  0.1724771 2.6e+07  2.6e+07 2.30e+08 2.56e+08\n6       0.530  0.2608194  0.1834968 2.5e+07  3.8e+07 2.55e+08 2.93e+08\n   eps netmargin    assets   assetsc liabilitiesc currentratio\n1 0.56     0.127 8.044e+09 4.598e+09    1.406e+09        3.270\n2 0.58     0.119 8.649e+09 5.096e+09    1.592e+09        3.201\n3 0.95     0.195 8.753e+09 5.223e+09    1.505e+09        3.470\n4 0.84     0.167 9.057e+09 5.569e+09    1.837e+09        3.032\n5 0.66     0.141 9.099e+09 5.715e+09    1.705e+09        3.352\n6 0.73     0.147 9.413e+09 6.010e+09    1.835e+09        3.275\n  workingcapital    capex    return\n1      3.192e+09 -3.8e+07 0.0000000\n2      3.504e+09 -5.1e+07 1.0358227\n3      3.718e+09 -3.2e+07 0.7482122\n4      3.732e+09 -4.9e+07 0.9375220\n5      4.010e+09 -4.6e+07 1.2785577\n6      4.175e+09 -3.7e+07 0.8845136"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 8:47:08 PM",
+      "dateFinished": "Mar 25, 2017 8:47:08 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\ncaldate \u003d unique(arq_data_factors$calendardate)\nlength(caldate)\nprj2_arq_date \u003d vector();\nprj2_arq_nn \u003d vector();\nprj2_date_replace \u003d vector();\nfactors1 \u003c- NULL\nfactors2 \u003c- NULL\nfactors3 \u003c- NULL\n#35 lines",
+      "dateUpdated": "Mar 25, 2017 8:18:00 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/r",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506729_-867189595",
+      "id": "20170227-230903_1171044609",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] 20"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 5:00:03 PM",
+      "dateFinished": "Mar 25, 2017 5:00:03 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n# Loop for dates - each date we get a dataset prj2_arq_\u0027date\u0027 \nfor (i in 1:length(caldate)){\n  #if (i \u003c 16)\n  #{\n    #print(paste0(\"calendar date: \", caldate[i]))\n    factors1 \u003c- subset(arq_data_factors, calendardate \u003d\u003d caldate[i])\n    \n    ### Calculating log(returns) ###\n    factors1 \u003c- subset(factors1, factors1$return !\u003d 0)\n    return_log \u003c- log(factors1$return)\n    factors1 \u003c- cbind(factors1, return_log)\n\n    ### Remove all NAs in our dataset before normalizing\n    factors1 \u003c- na.omit(factors1)\n    \n    ### Normalizing all Indicators\n    revenue_nor \u003c- (factors1[,3] - mean(factors1[,3])) / sd(factors1[,3])\n    cor_nor \u003c- (factors1[,4] - mean(factors1[,4])) / sd(factors1[,4])\n    gp_nor \u003c- (factors1[,5] - mean(factors1[,5])) / sd(factors1[,5])\n    sgna_nor \u003c- (factors1[,6] - mean(factors1[,6])) / sd(factors1[,6])\n    ebit_nor \u003c- (factors1[,7] - mean(factors1[,7])) / sd(factors1[,7])\n    gm_nor \u003c- (factors1[,8] - mean(factors1[,8])) / sd(factors1[,8])\n    sgna_mg_nor \u003c- (factors1[,9] - mean(factors1[,9])) / sd(factors1[,9])\n    ebit_mg_nor \u003c- (factors1[,10] - mean(factors1[,10])) / sd(factors1[,10])\n    intexp_nor \u003c- (factors1[,11] - mean(factors1[,11])) / sd(factors1[,11])\n    taxexp_nor \u003c- (factors1[,12] - mean(factors1[,12])) / sd(factors1[,12])\n    netinc_nor \u003c- (factors1[,13] - mean(factors1[,13])) / sd(factors1[,13])\n    ebt_nor \u003c- (factors1[,14] - mean(factors1[,14])) / sd(factors1[,14])\n    eps_nor \u003c- (factors1[,15] - mean(factors1[,15])) / sd(factors1[,15])\n    netmargin_nor \u003c- (factors1[,16] - mean(factors1[,16])) / sd(factors1[,16])\n    assets_nor \u003c- (factors1[,17] - mean(factors1[,17])) / sd(factors1[,17])\n    assetsc_nor \u003c- (factors1[,18] - mean(factors1[,18])) / sd(factors1[,18])\n    liabc_nor \u003c- (factors1[,19] - mean(factors1[,19])) / sd(factors1[,19])\n    cur_ratio_nor \u003c- (factors1[,20] - mean(factors1[,20])) / sd(factors1[,20])\n    wc_nor \u003c- (factors1[,21] - mean(factors1[,21])) / sd(factors1[,21])\n    capex_nor \u003c- (factors1[,22] - mean(factors1[,22])) / sd(factors1[,22])\n    \n    ### Appending normalized columns to new factors2\n    \n    factors1 \u003c- cbind(factors1, revenue_nor,cor_nor,gp_nor,sgna_nor,ebit_nor,gm_nor,sgna_mg_nor,ebit_mg_nor,\n                     intexp_nor,taxexp_nor,netinc_nor,ebt_nor,eps_nor,netmargin_nor,assets_nor,assetsc_nor,\n                     liabc_nor,cur_ratio_nor,wc_nor,capex_nor)\n    factors2 \u003c- factors1[c(1,2,25:44,23,24)]\n    factors3 \u003c- factors1[c(25:44,24)]\n    \n    prj2_date_replace[i] \u003c- gsub(\"-\", \"_\", caldate[i])\n    prj2_arq_date[i] \u003c- paste(\"prj2_arq_\", prj2_date_replace[i], sep \u003d \"\") \n    assign(prj2_arq_date[i], factors2)\n    \n    prj2_date_replace[i] \u003c- gsub(\"-\", \"_\", caldate[i])\n    prj2_arq_nn[i] \u003c- paste(\"prj2_arqnn_\", prj2_date_replace[i], sep \u003d \"\") \n    assign(prj2_arq_nn[i], factors3)\n    \n    factors1 \u003c- NULL\n    factors2 \u003c- NULL\n    factors3 \u003c- NULL\n    \n  #}\n}\n#70 lines",
+      "dateUpdated": "Mar 25, 2017 8:19:12 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506730_-866035348",
+      "id": "20170227-231152_637329822",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 5:04:35 PM",
+      "dateFinished": "Mar 25, 2017 5:04:36 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n# Datasets names \nhead(prj2_arq_date)\nhead(prj2_arq_nn)\n\n#head(get(prj2_arq_nn[1])\n#get(prj2_arq_nn[1])\n",
+      "dateUpdated": "Mar 25, 2017 9:04:54 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506730_-866035348",
+      "id": "20170227-231905_69309526",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] “prj2_arq_31_03_2011” “prj2_arq_30_06_2011” “prj2_arq_30_09_2011”\n[4] “prj2_arq_31_12_2011” “prj2_arq_31_03_2012” “prj2_arq_30_06_2012”\n[1] “prj2_arqnn_31_03_2011” “prj2_arqnn_30_06_2011” “prj2_arqnn_30_09_2011”\n[4] “prj2_arqnn_31_12_2011” “prj2_arqnn_31_03_2012” “prj2_arqnn_30_06_2012”"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 9:04:54 PM",
+      "dateFinished": "Mar 25, 2017 9:04:54 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\ninstall.packages(\"neuralnet\", repos \u003d \"http://cran.us.r-project.org\")\ninstall.packages(\"MASS\", repos \u003d \"http://cran.us.r-project.org\")\n",
+      "dateUpdated": "Mar 25, 2017 8:07:59 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506730_-866035348",
+      "id": "20170227-231937_322924360",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "The downloaded source packages are in\n    \u0027/tmp/RtmpdfiJRz/downloaded_packages\u0027"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 5:06:20 PM",
+      "dateFinished": "Mar 25, 2017 5:06:39 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\nlibrary(\"MASS\")\nlibrary(\"neuralnet\")",
+      "dateUpdated": "Mar 25, 2017 8:08:06 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506731_-866420097",
+      "id": "20170227-232346_1724948064",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 5:07:01 PM",
+      "dateFinished": "Mar 25, 2017 5:07:01 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n###################### neural network - package does not take Strings!! \nnames_date \u003c- names(get(prj2_arq_nn[1]))\nnames_date",
+      "dateUpdated": "Mar 25, 2017 8:08:10 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506731_-866420097",
+      "id": "20170227-233526_1143490521",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] “revenue_nor”   “cor_nor”       “gp_nor”        “sgna_nor”\u003cbr /\u003e\n [5] “ebit_nor”      “gm_nor”        “sgna_mg_nor”   “ebit_mg_nor”\u003cbr /\u003e\n [9] “intexp_nor”    “taxexp_nor”    “netinc_nor”    “ebt_nor”\u003cbr /\u003e\n[13] “eps_nor”       “netmargin_nor” “assets_nor”    “assetsc_nor”\u003cbr /\u003e\n[17] “liabc_nor”     “cur_ratio_nor” “wc_nor”        “capex_nor”\u003cbr /\u003e\n[21] “return_log”"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 5:07:07 PM",
+      "dateFinished": "Mar 25, 2017 5:07:07 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n### log(returns) as y .... we need to get the formula to use in nueral networks as it does not take strings\nnames_date %in% \"return_log\"\n!names_date %in% \"return_log\"\npaste(names_date[!names_date %in% \"return_log\"])\npaste(names_date[!names_date %in% \"return_log\"], collapse \u003d \"+\")\npaste(\"return_log ~ \", paste(names_date[!names_date %in% \"return_log\"], collapse \u003d \"+\"))\nformula1 \u003c- as.formula(paste(\"return_log ~ \", paste(names_date[!names_date %in% \"return_log\"], collapse \u003d \"+\")))\nformula1\n",
+      "dateUpdated": "Mar 25, 2017 8:19:51 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506731_-866420097",
+      "id": "20170227-233645_1615816671",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n[12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE\n [1] “revenue_nor”   “cor_nor”       “gp_nor”        “sgna_nor”\u003cbr /\u003e\n [5] “ebit_nor”      “gm_nor”        “sgna_mg_nor”   “ebit_mg_nor”\u003cbr /\u003e\n [9] “intexp_nor”    “taxexp_nor”    “netinc_nor”    “ebt_nor”\u003cbr /\u003e\n[13] “eps_nor”       “netmargin_nor” “assets_nor”    “assetsc_nor”\u003cbr /\u003e\n[17] “liabc_nor”     “cur_ratio_nor” “wc_nor”        “capex_nor”\u003cbr /\u003e\n[1] “revenue_nor+cor_nor+gp_nor+sgna_nor+ebit_nor+gm_nor+sgna_mg_nor+ebit_mg_nor+intexp_nor+taxexp_nor+netinc_nor+ebt_nor+eps_nor+netmargin_nor+assets_nor+assetsc_nor+liabc_nor+cur_ratio_nor+wc_nor+capex_nor”\n[1] “return_log ~  revenue_nor+cor_nor+gp_nor+sgna_nor+ebit_nor+gm_nor+sgna_mg_nor+ebit_mg_nor+intexp_nor+taxexp_nor+netinc_nor+ebt_nor+eps_nor+netmargin_nor+assets_nor+assetsc_nor+liabc_nor+cur_ratio_nor+wc_nor+capex_nor”\nreturn_log ~ revenue_nor + cor_nor + gp_nor + sgna_nor + ebit_nor + \n    gm_nor + sgna_mg_nor + ebit_mg_nor + intexp_nor + taxexp_nor + \n    netinc_nor + ebt_nor + eps_nor + netmargin_nor + assets_nor + \n    assetsc_nor + liabc_nor + cur_ratio_nor + wc_nor + capex_nor"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 5:07:11 PM",
+      "dateFinished": "Mar 25, 2017 5:07:11 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n############# Assigning datasets - from date 15 to date 20 \nuvw1 \u003c- get(prj2_arq_nn[15])\nuvw2 \u003c- get(prj2_arq_nn[16])\nuvw3 \u003c- get(prj2_arq_nn[17])\nuvw4 \u003c- get(prj2_arq_nn[18])\nuvw5 \u003c- get(prj2_arq_nn[19])\nuvw6 \u003c- get(prj2_arq_nn[20])\nhead(get(prj2_arq_date[17]))\n#94 lines",
+      "dateUpdated": "Mar 25, 2017 9:05:33 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490474506731_-866420097",
+      "id": "20170227-233704_1381105503",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "17       A   31-03-2015  0.01439033 -0.04207989  0.1390798  0.20840226\n38      AA   31-03-2015  1.20665857  1.26814971  0.7906741  0.09887883\n44     AAC   31-03-2015 -0.23017689 -0.21310986 -0.2159198 -0.19253635\n83     AAL   31-03-2015  2.20365650  1.19547031  3.9814477  3.57694991\n146   AAOI   31-03-2015 -0.23330843 -0.20638101 -0.2406638 -0.21766917\n167   AAON   31-03-2015 -0.22173300 -0.19478331 -0.2317944 -0.21520489\n        ebit_nor      gm_nor sgna_mg_nor ebit_mg_nor   intexp_nor\n17   0.005610863  0.05788391 -0.04398179  0.04982287 -0.005237661\n38   0.743086384 -0.07349110 -0.04627883  0.04981099  1.976632243\n44  -0.150845233  0.30670023 -0.04162526  0.04988165 -0.290533443\n83   1.756284735  0.09271820 -0.04421367  0.04990082  3.621958201\n146 -0.159739786 -0.02571837 -0.04472714  0.04939392 -0.302050725\n167 -0.136494358 -0.04960474 -0.04567916  0.05011704 -0.304387835\n     taxexp_nor netinc_nor      ebt_nor    eps_nor netmargin_nor\n17  -0.07104492  0.0357906  0.006291527 0.01802950    0.05025438\n38   1.22135355  0.3202280  0.587601802 0.01791388    0.05011986\n44  -0.12908262 -0.1244217 -0.129466780 0.01781754    0.05017217\n83  -0.07104492  2.0245400  1.485365008 0.02020695    0.05034779\n146 -0.13716763 -0.1322703 -0.137617163 0.01752849    0.04991061\n167 -0.10683534 -0.1112867 -0.113332840 0.01793315    0.05040011\n    assets_nor assetsc_nor   liabc_nor cur_ratio_nor     wc_nor  capex_nor\n17   0.1341198   0.3854973 -0.02359481     0.2137431  0.8378871  0.1137629\n38   1.7151735   1.1222830  1.01690952    -0.3889055  0.8122464 -0.6176048\n44  -0.2772076  -0.2582693 -0.25259079     0.6320756 -0.1591437  0.1833347\n83   2.3358107   2.2827026  3.32357882    -0.5217729 -0.2292194 -4.5567855\n146 -0.2773629  -0.2579879 -0.24402651    -0.2820121 -0.1713943  0.2007548\n167 -0.2745266  -0.2515492 -0.24733268     0.1135930 -0.1530340  0.2104157\n       return  return_log\n17  0.9701528 -0.03030168\n38  0.8243750 -0.19312976\n44  1.2981744  0.26095900\n83  1.0598230  0.05810195\n146 1.1601256  0.14852827\n167 1.0115504  0.01148423"
+      },
+      "dateCreated": "Mar 25, 2017 4:41:46 PM",
+      "dateStarted": "Mar 25, 2017 9:05:33 PM",
+      "dateFinished": "Mar 25, 2017 9:05:34 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n\n############# Assigning datasets - from date 1 to date 15\nmar2011 \u003c- get(prj2_arq_nn[1])\njun2011 \u003c- get(prj2_arq_nn[2])\nsep2011 \u003c- get(prj2_arq_nn[3])\ndec2011 \u003c- get(prj2_arq_nn[4])\nmar2012 \u003c- get(prj2_arq_nn[5])\njun2012 \u003c- get(prj2_arq_nn[6])\nsep2012 \u003c- get(prj2_arq_nn[7])\ndec2012 \u003c- get(prj2_arq_nn[8])\nmar2013 \u003c- get(prj2_arq_nn[9])\njun2013 \u003c- get(prj2_arq_nn[10])\nsep2013 \u003c- get(prj2_arq_nn[11])\ndec2013 \u003c- get(prj2_arq_nn[12])\nmar2014 \u003c- get(prj2_arq_nn[13])\njun2014 \u003c- get(prj2_arq_nn[14])\nsep2014 \u003c- get(prj2_arq_nn[15])\ndec2014 \u003c- get(prj2_arq_nn[16])\nmar2015 \u003c- get(prj2_arq_nn[17])\njun2015 \u003c- get(prj2_arq_nn[18])\nsep2015 \u003c- get(prj2_arq_nn[19])\ndec2015 \u003c- get(prj2_arq_nn[20])\n\n#mar2011\n\n",
+      "dateUpdated": "Mar 25, 2017 9:05:59 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490476689248_-416506903",
+      "id": "20170325-171809_65659931",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Mar 25, 2017 5:18:09 PM",
+      "dateStarted": "Mar 25, 2017 9:05:59 PM",
+      "dateFinished": "Mar 25, 2017 9:06:00 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n###################### neural network - package does not \nnames_date \u003c- names(get(prj2_arq_nn[1]))\nnames_date\n### log(returns) as y .... we need to get the formula to use in nueral networks as it does not take strings\nnames_date %in% \"return_log\"\n!names_date %in% \"return_log\"\npaste(names_date[!names_date %in% \"return_log\"])\npaste(names_date[!names_date %in% \"return_log\"], collapse \u003d \"+\")\npaste(\"return_log ~ \", paste(names_date[!names_date %in% \"return_log\"], collapse \u003d \"+\"))\nformula1 \u003c- as.formula(paste(\"return_log ~ \", paste(names_date[!names_date %in% \"return_log\"], collapse \u003d \"+\")))\nformula1\n#124 lines",
+      "dateUpdated": "Mar 25, 2017 8:20:32 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490476683577_634611768",
+      "id": "20170325-171803_600252337",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] “revenue_nor”   “cor_nor”       “gp_nor”        “sgna_nor”\u003cbr /\u003e\n [5] “ebit_nor”      “gm_nor”        “sgna_mg_nor”   “ebit_mg_nor”\u003cbr /\u003e\n [9] “intexp_nor”    “taxexp_nor”    “netinc_nor”    “ebt_nor”\u003cbr /\u003e\n[13] “eps_nor”       “netmargin_nor” “assets_nor”    “assetsc_nor”\u003cbr /\u003e\n[17] “liabc_nor”     “cur_ratio_nor” “wc_nor”        “capex_nor”\u003cbr /\u003e\n[21] “return_log”\u003cbr /\u003e\n [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE\n[12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE\n [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE\n[12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE\n [1] “revenue_nor”   “cor_nor”       “gp_nor”        “sgna_nor”\u003cbr /\u003e\n [5] “ebit_nor”      “gm_nor”        “sgna_mg_nor”   “ebit_mg_nor”\u003cbr /\u003e\n [9] “intexp_nor”    “taxexp_nor”    “netinc_nor”    “ebt_nor”\u003cbr /\u003e\n[13] “eps_nor”       “netmargin_nor” “assets_nor”    “assetsc_nor”\u003cbr /\u003e\n[17] “liabc_nor”     “cur_ratio_nor” “wc_nor”        “capex_nor”\u003cbr /\u003e\n[1] “revenue_nor+cor_nor+gp_nor+sgna_nor+ebit_nor+gm_nor+sgna_mg_nor+ebit_mg_nor+intexp_nor+taxexp_nor+netinc_nor+ebt_nor+eps_nor+netmargin_nor+assets_nor+assetsc_nor+liabc_nor+cur_ratio_nor+wc_nor+capex_nor”\n[1] “return_log ~  revenue_nor+cor_nor+gp_nor+sgna_nor+ebit_nor+gm_nor+sgna_mg_nor+ebit_mg_nor+intexp_nor+taxexp_nor+netinc_nor+ebt_nor+eps_nor+netmargin_nor+assets_nor+assetsc_nor+liabc_nor+cur_ratio_nor+wc_nor+capex_nor”\nreturn_log ~ revenue_nor + cor_nor + gp_nor + sgna_nor + ebit_nor + \n    gm_nor + sgna_mg_nor + ebit_mg_nor + intexp_nor + taxexp_nor + \n    netinc_nor + ebt_nor + eps_nor + netmargin_nor + assets_nor + \n    assetsc_nor + liabc_nor + cur_ratio_nor + wc_nor + capex_nor"
+      },
+      "dateCreated": "Mar 25, 2017 5:18:03 PM",
+      "dateStarted": "Mar 25, 2017 5:24:49 PM",
+      "dateFinished": "Mar 25, 2017 5:24:52 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n\n## 2011 ##\nnn1_2011_03_31 \u003c- neuralnet(formula1, data\u003dmar2011, hidden \u003d c(8,7), linear.output \u003d T)\nnn1_2011_06_30 \u003c- neuralnet(formula1, data\u003djun2011, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2011_09_30 \u003c- neuralnet(formula1, data\u003dsep2011, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2011_12_31 \u003c- neuralnet(formula1, data\u003ddec2011, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\n## weights 2011 ##\nwgt_2011_03_31 \u003c- nn1_2011_03_31$result.matrix\nwgt_2011_06_30 \u003c- nn1_2011_06_30$result.matrix\nwgt_2011_09_30 \u003c- nn1_2011_09_30$result.matrix\nwgt_2011_12_31 \u003c- nn1_2011_12_31$result.matrix\n\n## 2012 ##\nnn1_2012_03_31 \u003c- neuralnet(formula1, data\u003dmar2012, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2012_06_30 \u003c- neuralnet(formula1, data\u003djun2012, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2012_09_30 \u003c- neuralnet(formula1, data\u003dsep2012, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2012_12_31 \u003c- neuralnet(formula1, data\u003ddec2012, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.06)\n## weights 2012 ##\nwgt_2012_03_31 \u003c- nn1_2012_03_31$result.matrix\nwgt_2012_06_30 \u003c- nn1_2012_06_30$result.matrix\nwgt_2012_09_30 \u003c- nn1_2012_09_30$result.matrix\nwgt_2012_12_31 \u003c- nn1_2012_12_31$result.matrix\n\n## 2013 ##\nnn1_2013_03_31 \u003c- neuralnet(formula1, data\u003dmar2013, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2013_06_30 \u003c- neuralnet(formula1, data\u003djun2013, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2013_09_30 \u003c- neuralnet(formula1, data\u003dsep2013, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2013_12_31 \u003c- neuralnet(formula1, data\u003ddec2013, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.07)\n## weights 2013 ##\nwgt_2013_03_31 \u003c- nn1_2013_03_31$result.matrix\nwgt_2013_06_30 \u003c- nn1_2013_06_30$result.matrix\nwgt_2013_09_30 \u003c- nn1_2013_09_30$result.matrix\nwgt_2013_12_31 \u003c- nn1_2013_12_31$result.matrix\n\n## 2014 ##\nnn1_2014_03_31 \u003c- neuralnet(formula1, data\u003dmar2014, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2014_06_30 \u003c- neuralnet(formula1, data\u003djun2014, hidden \u003d c(8,7), linear.output \u003d T, threshold \u003d 0.05)\nnn1_2014_09_30 \u003c- neuralnet(formula1, data\u003duvw1, hidden \u003d c(8,7), linear.output \u003d T, stepmax \u003d 1e6)\nnn1_2014_12_31 \u003c- neuralnet(formula1, data\u003duvw2, hidden \u003d c(8,7), linear.output \u003d T, stepmax \u003d 1e6)\n## weights 2014 ##\nwgt_2014_03_31 \u003c- nn1_2014_03_31$result.matrix\nwgt_2014_06_30 \u003c- nn1_2014_06_30$result.matrix\nwgt_2014_09_30 \u003c- nn1_2014_09_30$result.matrix\nwgt_2014_12_31 \u003c- nn1_2014_12_31$result.matrix\n\nweights_matrix \u003c- as.data.frame(cbind(wgt_2011_03_31, wgt_2011_06_30, wgt_2011_09_30, wgt_2011_12_31, \n                                      wgt_2012_03_31, wgt_2012_06_30, wgt_2012_09_30, wgt_2012_12_31, \n                                      wgt_2013_03_31, wgt_2013_06_30, wgt_2013_09_30, wgt_2013_12_31, \n                                      wgt_2014_03_31, wgt_2014_06_30, wgt_2014_09_30))\n\ncolnames(weights_matrix) \u003c- c(\"nn1_2011_03_31\", \"nn1_2011_06_30\", \"nn1_2011_09_30\", \"nn1_2011_12_31\", \n                          \"nn1_2012_03_31\", \"nn1_2012_06_30\", \"nn1_2012_09_30\", \"nn1_2012_12_31\", \n                          \"nn1_2013_03_31\", \"nn1_2013_06_30\", \"nn1_2013_09_30\", \"nn1_2013_12_31\", \n                          \"nn1_2014_03_31\", \"nn1_2014_06_30\", \"nn1_2014_09_30\")\n                           \nmatrix_weight \u003c- read.csv(file \u003d \"/home/scarface/Desktop/sem-3/capstone/madhu/Matrix_Weight.csv\", header\u003dFALSE)\nsave(matrix_weight, file\u003d\"matWeights.rdata\")\nload(\"matWeights.rdata\")\nnrow(matrix_weight)\nncol(matrix_weight)\n#164 lines",
+      "dateUpdated": "Mar 25, 2017 8:21:22 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/r",
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490486293737_-650516983",
+      "id": "20170325-195813_1618806650",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] 15\n[1] 239"
+      },
+      "dateCreated": "Mar 25, 2017 7:58:13 PM",
+      "dateStarted": "Mar 25, 2017 7:58:56 PM",
+      "dateFinished": "Mar 25, 2017 7:58:56 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n####### Smoothing the weights from NN model\n####### Time series Analysis - MA model timeseries_nn.R\n####### \n################# Use p\u003d0, d\u003d2, q\u003d1 as model ########################\np_w \u003c- vector();\npredict_weights \u003d vector();\nabc\u003dvector();\nfor(j in 1:5)\n{\n  print(paste0(\"Date: \", j))\n  for(i in 1:ncol(matrix_weight))\n  {\n    test1 \u003c- arima(matrix_weight[,i], order \u003d c(0,2,1))\n    test2 \u003c- predict(test1, n.ahead \u003d 1)\n    p_w \u003d test2$pred[1]\n    predict_weights[i] \u003c- p_w\n  }\n  predict_weight \u003c- t(predict_weights)\n  #print(paste0(nrow(matrix_weight),\":\",nrow))\n  matrix_weight \u003d rbind(matrix_weight, predict_weight)\n  #print(rbind(matrix_weight, predict_weight))\n  print (paste0(\"Row count: \", nrow(matrix_weight)))\n  \n  p_w \u003d NULL;\n  predict_weights \u003d NULL;\n  predict_weight \u003d NULL;\n  #test1 \u003c- NULL;\n  #test2 \u003c- NULL;\n}\n\n#View(matrix_weight)\n\n#177 lines",
+      "dateUpdated": "Mar 25, 2017 8:21:46 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490478647711_1449930793",
+      "id": "20170325-175047_237567722",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] “Date: 1”\n[1] “Row count: 16”\n[1] “Date: 2”\n[1] “Row count: 17”\n[1] “Date: 3”\n[1] “Row count: 18”\n[1] “Date: 4”\n[1] “Row count: 19”\n[1] “Date: 5”\n[1] “Row count: 20”"
+      },
+      "dateCreated": "Mar 25, 2017 5:50:47 PM",
+      "dateStarted": "Mar 25, 2017 7:59:54 PM",
+      "dateFinished": "Mar 25, 2017 7:59:57 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\nnrow(matrix_weight)\nncol(matrix_weight)\n#head(matrix_weight)",
+      "dateUpdated": "Mar 25, 2017 9:07:08 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/r",
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490486415044_565056390",
+      "id": "20170325-200015_1027059100",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "[1] 20\n[1] 239"
+      },
+      "dateCreated": "Mar 25, 2017 8:00:15 PM",
+      "dateStarted": "Mar 25, 2017 9:07:08 PM",
+      "dateFinished": "Mar 25, 2017 9:07:08 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%spark.r\n###################### Neural Network Equation ######################\n#View(dec2014)\nfor (a in 16:20)\n{\n  if (a\u003d\u003d16){\n    for(b in 1:ncol(get(prj2_arq_nn[a]))-1)\n    {\n      if(b \u003d\u003d 1)\n      {\n        #print(paste0(\"Column no:\", b, get(prj2_arq_nn[a])[b]))  \n      }\n    }\n  }\n  \n}\n#185 lines",
+      "dateUpdated": "Mar 25, 2017 9:07:44 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "lineNumbers": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490479556093_1062361647",
+      "id": "20170325-180556_290260575",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Mar 25, 2017 6:05:56 PM",
+      "dateStarted": "Mar 25, 2017 9:07:44 PM",
+      "dateFinished": "Mar 25, 2017 9:07:44 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "",
+      "dateUpdated": "Mar 25, 2017 8:01:35 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1490486482941_886999274",
+      "id": "20170325-200122_1697064954",
+      "dateCreated": "Mar 25, 2017 8:01:22 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "DS-670_Assignment9_StockAnalysis",
+  "id": "2CB5DBYAH",
+  "angularObjects": {
+    "2C9JSZ8F6:shared_process": [],
+    "2C76JEGJK:shared_process": [],
+    "2C9KVRJFM:shared_process": [],
+    "2C96PR61F:shared_process": [],
+    "2C71QQ3SN:shared_process": [],
+    "2CAFYMFZG:shared_process": [],
+    "2C8WD3GN5:shared_process": [],
+    "2C8CGYQ7X:shared_process": [],
+    "2C8CNUVYX:shared_process": [],
+    "2CAB54RWM:shared_process": [],
+    "2C9D26FEK:shared_process": [],
+    "2C6QSWWYB:shared_process": [],
+    "2C9YBBB8C:shared_process": [],
+    "2C8HJZVSJ:shared_process": [],
+    "2C9WHVWBE:shared_process": [],
+    "2C8XRJZ1Y:shared_process": [],
+    "2C9PYQBKV:shared_process": [],
+    "2C9PCSU6V:shared_process": []
+  },
+  "config": {
+    "looknfeel": "default"
+  },
+  "info": {}
+}
