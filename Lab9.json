@@ -1,0 +1,345 @@
+{
+  "paragraphs": [
+    {
+      "text": "%pyspark\nfrom pandas import Series, DataFrame\nimport pandas as pd\nimport numpy as np",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 6:58:48 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1490914134944_-250806624",
+      "id": "20170330-184854_1406669796",
+      "dateCreated": "Mar 30, 2017 6:48:54 PM",
+      "dateStarted": "Mar 30, 2017 6:58:48 PM",
+      "dateFinished": "Mar 30, 2017 6:58:48 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\ndata_iwm \u003d pd.read_csv(\u0027/Users/datascienceadmin/Downloads/iwm.csv\u0027, sep\u003d\",\", parse_dates\u003dTrue, index_col\u003d0)\ndata_iwm.info()\ndf \u003d data_iwm.ix[1:]\nprint(df.shape)\ndf1\u003d df.ix[1:1000,]\ndf2\u003ddf.ix[1001:2000,]\nprint(df1.shape)\nprint(df2.shape)\n\ndata1 \u003d pd.to_numeric(df.Open)\ndata2 \u003d pd.to_numeric(df.Close)\ndata3 \u003d pd.to_numeric(df[\u0027High\u0027])\n\ntype(data1)\n#print(df2)",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:15:44 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u003cclass \u0027pandas.core.frame.DataFrame\u0027\u003e\nDatetimeIndex: 4205 entries, 2017-02-13 to 2000-05-26\nData columns (total 6 columns):\nOpen         4205 non-null float64\nHigh         4205 non-null float64\nLow          4205 non-null float64\nClose        4205 non-null float64\nVolume       4205 non-null int64\nAdj Close    4205 non-null float64\ndtypes: float64(5), int64(1)\nmemory usage: 230.0 KB\n(4204, 6)\n(999, 6)\n(999, 6)\n\u003cclass \u0027pandas.core.series.Series\u0027\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1490914757598_-970954753",
+      "id": "20170330-185917_666287259",
+      "dateCreated": "Mar 30, 2017 6:59:17 PM",
+      "dateStarted": "Mar 30, 2017 8:15:44 PM",
+      "dateFinished": "Mar 30, 2017 8:15:44 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nframe \u003d DataFrame({\u0027Open\u0027: data1, \u0027Close\u0027: data2, \u0027High\u0027: data3})\n#factor \u003d pd.cut(frame.data1,4)\n#factor[:10]\nframe\n\n",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:15:56 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "                 Close        High        Open\nDate                                          \n2017-02-10  137.940002  138.369995  137.789993\n2017-02-09  136.899994  137.250000  135.000000\n2017-02-08  135.000000  135.240005  135.240005\n2017-02-07  135.240005  136.470001  135.820007\n2017-02-06  135.839996  136.779999  136.399994\n2017-02-03  136.869995  136.979996  135.990005\n2017-02-02  134.809998  135.669998  135.300003\n2017-02-01  135.149994  136.869995  136.220001\n2017-01-31  135.229996  135.559998  133.869995\n2017-01-30  134.289993  135.240005  135.229996\n2017-01-27  136.190002  137.039993  136.770004\n2017-01-26  136.660004  137.500000  137.339996\n2017-01-25  137.210007  137.550003  137.059998\n2017-01-24  135.929993  136.279999  134.339996\n2017-01-23  133.880005  134.679993  134.029999\n2017-01-20  134.440002  134.880005  133.750000\n2017-01-19  133.750000  135.440002  135.139999\n2017-01-18  134.850006  134.940002  134.759995\n2017-01-17  134.410004  135.690002  135.600006\n2017-01-13  136.259995  136.970001  135.649994\n2017-01-12  135.279999  136.220001  136.160004\n2017-01-11  136.330002  136.789993  136.229996\n2017-01-10  136.089996  136.380005  135.000000\n2017-01-09  134.800003  135.720001  135.539993\n2017-01-06  135.690002  136.710007  136.410004\n2017-01-05  136.190002  137.759995  137.490005\n2017-01-04  137.779999  137.960007  136.050003\n2017-01-03  135.520004  136.830002  136.490005\n2016-12-30  134.850006  135.630005  135.600006\n2016-12-29  135.369995  136.259995  135.289993\n...                ...         ...         ...\n2000-07-10  106.187500  106.562500  105.437500\n2000-07-07  105.500000  105.906242  104.859383\n2000-07-06  104.843758  104.843758  103.656242\n2000-07-05  103.625000  104.250000  104.218758\n2000-07-03  104.812500  104.812500  103.125000\n2000-06-30  103.359383  103.359383  102.437500\n2000-06-29  102.375000  103.687500  103.500000\n2000-06-28  104.000000  104.375000  101.875000\n2000-06-27  101.437500  104.125000  103.218758\n2000-06-26  103.062500  103.062500  102.218758\n2000-06-23  101.812500  103.500000  103.500000\n2000-06-22  102.500000  106.000000  106.000000\n2000-06-21  105.687500  105.875000  104.250000\n2000-06-20  105.187500  105.343758  104.656242\n2000-06-19  104.500000  104.500000  102.500000\n2000-06-16  101.937500  103.000000  102.937500\n2000-06-15  102.500000  102.500000  101.750000\n2000-06-14  102.375000  103.718758  103.718758\n2000-06-13  102.875000  102.875000  101.328117\n2000-06-12  101.578117  105.000000  105.000000\n2000-06-09  104.687500  104.687500  103.875000\n2000-06-08  102.875000  104.250000  104.250000\n2000-06-07  103.125000  103.125000  102.375000\n2000-06-06  103.000000  104.812500  103.609383\n2000-06-05  102.000000  103.125000  102.125000\n2000-06-02  102.375000  102.375000  101.718758\n2000-06-01   97.312500   97.312500   97.109383\n2000-05-31   95.156242   96.375000   95.125000\n2000-05-30   94.812500   94.812500   92.750000\n2000-05-26   91.437500   91.437500   91.062500\n\n[4204 rows x 3 columns]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1490914728363_531828478",
+      "id": "20170330-185848_422077214",
+      "dateCreated": "Mar 30, 2017 6:58:48 PM",
+      "dateStarted": "Mar 30, 2017 8:15:56 PM",
+      "dateFinished": "Mar 30, 2017 8:15:56 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nrets \u003d frame.pct_change().dropna()\nrets\n",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:16:04 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "               Close      High      Open\nDate                                    \n2017-02-09 -0.007540 -0.008094 -0.020248\n2017-02-08 -0.013879 -0.014645  0.001778\n2017-02-07  0.001778  0.009095  0.004289\n2017-02-06  0.004436  0.002272  0.004270\n2017-02-03  0.007582  0.001462 -0.003006\n2017-02-02 -0.015051 -0.009563 -0.005074\n2017-02-01  0.002522  0.008845  0.006800\n2017-01-31  0.000592 -0.009571 -0.017252\n2017-01-30 -0.006951 -0.002361  0.010159\n2017-01-27  0.014149  0.013310  0.011388\n2017-01-26  0.003451  0.003357  0.004168\n2017-01-25  0.004025  0.000364 -0.002039\n2017-01-24 -0.009329 -0.009233 -0.019845\n2017-01-23 -0.015081 -0.011741 -0.002308\n2017-01-20  0.004183  0.001485 -0.002089\n2017-01-19 -0.005132  0.004152  0.010393\n2017-01-18  0.008224 -0.003692 -0.002812\n2017-01-17 -0.003263  0.005558  0.006233\n2017-01-13  0.013764  0.009433  0.000369\n2017-01-12 -0.007192 -0.005476  0.003760\n2017-01-11  0.007762  0.004184  0.000514\n2017-01-10 -0.001760 -0.002997 -0.009029\n2017-01-09 -0.009479 -0.004839  0.004000\n2017-01-06  0.006602  0.007294  0.006419\n2017-01-05  0.003685  0.007680  0.007917\n2017-01-04  0.011675  0.001452 -0.010474\n2017-01-03 -0.016403 -0.008191  0.003234\n2016-12-30 -0.004944 -0.008770 -0.006521\n2016-12-29  0.003856  0.004645 -0.002286\n2016-12-28 -0.000886  0.005284  0.011826\n...              ...       ...       ...\n2000-07-10  0.001179 -0.000293 -0.005307\n2000-07-07 -0.006474 -0.006158 -0.005483\n2000-07-06 -0.006220 -0.010032 -0.011474\n2000-07-05 -0.011625 -0.005663  0.005427\n2000-07-03  0.011460  0.005396 -0.010495\n2000-06-30 -0.013864 -0.013864 -0.006667\n2000-06-29 -0.009524  0.003175  0.010372\n2000-06-28  0.015873  0.006631 -0.015700\n2000-06-27 -0.024639 -0.002395  0.013190\n2000-06-26  0.016020 -0.010204 -0.009688\n2000-06-23 -0.012129  0.004245  0.012534\n2000-06-22  0.006753  0.024155  0.024155\n2000-06-21  0.031098 -0.001179 -0.016509\n2000-06-20 -0.004731 -0.005018  0.003897\n2000-06-19 -0.006536 -0.008010 -0.020603\n2000-06-16 -0.024522 -0.014354  0.004268\n2000-06-15  0.005518 -0.004854 -0.011536\n2000-06-14 -0.001220  0.011890  0.019349\n2000-06-13  0.004884 -0.008135 -0.023049\n2000-06-12 -0.012606  0.020656  0.036238\n2000-06-09  0.030611 -0.002976 -0.010714\n2000-06-08 -0.017313 -0.004179  0.003610\n2000-06-07  0.002430 -0.010791 -0.017986\n2000-06-06 -0.001212  0.016364  0.012057\n2000-06-05 -0.009709 -0.016100 -0.014327\n2000-06-02  0.003676 -0.007273 -0.003978\n2000-06-01 -0.049451 -0.049451 -0.045315\n2000-05-31 -0.022158 -0.009634 -0.020435\n2000-05-30 -0.003612 -0.016213 -0.024967\n2000-05-26 -0.035597 -0.035597 -0.018194\n\n[4203 rows x 3 columns]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1490917133675_-1556540411",
+      "id": "20170330-193853_2055781792",
+      "dateCreated": "Mar 30, 2017 7:38:53 PM",
+      "dateStarted": "Mar 30, 2017 8:16:04 PM",
+      "dateFinished": "Mar 30, 2017 8:16:04 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nopen_corr \u003d lambda x: x.corrwith(x[\u0027Open\u0027])\nopen_corr\n\nby_year \u003d rets.groupby(lambda x: x.year)\nby_year.apply(open_corr)",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:16:38 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "         Close      High  Open\n2000  0.211016  0.751631   1.0\n2001  0.232025  0.664719   1.0\n2002  0.133391  0.740484   1.0\n2003  0.191029  0.709983   1.0\n2004  0.116431  0.680469   1.0\n2005  0.978898  0.993194   1.0\n2006  0.141991  0.701554   1.0\n2007  0.190359  0.691831   1.0\n2008  0.104910  0.691846   1.0\n2009  0.226277  0.680368   1.0\n2010  0.324483  0.763784   1.0\n2011  0.338510  0.775950   1.0\n2012  0.307069  0.760884   1.0\n2013  0.164838  0.701875   1.0\n2014  0.164515  0.709029   1.0\n2015  0.271998  0.706422   1.0\n2016  0.268257  0.695582   1.0\n2017  0.135370  0.558339   1.0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1490917478897_-660938561",
+      "id": "20170330-194438_1868257836",
+      "dateCreated": "Mar 30, 2017 7:44:38 PM",
+      "dateStarted": "Mar 30, 2017 8:16:38 PM",
+      "dateFinished": "Mar 30, 2017 8:16:38 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n# Annual correlation of Apple with Microsoft\nby_year.apply(lambda g: g[\u0027Close\u0027].corr(g[\u0027High\u0027]))",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:16:55 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "2000    0.641230\n2001    0.670741\n2002    0.569075\n2003    0.601328\n2004    0.562687\n2005    0.991517\n2006    0.563527\n2007    0.583641\n2008    0.505477\n2009    0.682910\n2010    0.663096\n2011    0.654911\n2012    0.688828\n2013    0.581989\n2014    0.610730\n2015    0.630977\n2016    0.736297\n2017    0.769283\ndtype: float64\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1490917756478_-1955620255",
+      "id": "20170330-194916_30641025",
+      "dateCreated": "Mar 30, 2017 7:49:16 PM",
+      "dateStarted": "Mar 30, 2017 8:16:55 PM",
+      "dateFinished": "Mar 30, 2017 8:16:55 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nimport statsmodels.api as sm\n\n",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:26:47 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1490918782276_842717027",
+      "id": "20170330-200622_1507843450",
+      "dateCreated": "Mar 30, 2017 8:06:22 PM",
+      "dateStarted": "Mar 30, 2017 8:26:47 PM",
+      "dateFinished": "Mar 30, 2017 8:26:51 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\ndef regression(data, yvar, xvars):\n  Y \u003d data[yvar]\n  X \u003d data[xvars]\n  X[\u0027intercept\u0027] \u003d 1.\n  result \u003d sm.OLS(Y,X).fit()\n  return result.params\n",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:26:54 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1490919574812_-1282505081",
+      "id": "20170330-201934_1761132568",
+      "dateCreated": "Mar 30, 2017 8:19:34 PM",
+      "dateStarted": "Mar 30, 2017 8:26:54 PM",
+      "dateFinished": "Mar 30, 2017 8:26:54 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nby_year.apply(regression,\u0027Close\u0027,[\u0027Open\u0027])",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:27:39 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "          Open  intercept\n2000  0.210685   0.000124\n2001  0.209317  -0.000107\n2002  0.124583   0.000882\n2003  0.186596  -0.001106\n2004  0.121176  -0.000392\n2005  0.944552   0.000025\n2006  0.137710  -0.000412\n2007  0.199065   0.000202\n2008  0.094961   0.001804\n2009  0.245712  -0.000537\n2010  0.341360  -0.000484\n2011  0.362229   0.000317\n2012  0.280029  -0.000402\n2013  0.177912  -0.000848\n2014  0.150396  -0.000097\n2015  0.271727   0.000262\n2016  0.271430  -0.000553\n2017  0.140363  -0.000572\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1490920014243_1644110115",
+      "id": "20170330-202654_734720086",
+      "dateCreated": "Mar 30, 2017 8:26:54 PM",
+      "dateStarted": "Mar 30, 2017 8:27:39 PM",
+      "dateFinished": "Mar 30, 2017 8:27:39 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "Mar 30, 2017 8:27:39 PM",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1490920059124_226741140",
+      "id": "20170330-202739_566354784",
+      "dateCreated": "Mar 30, 2017 8:27:39 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Lab_Mar30",
+  "id": "2CEF6CFU6",
+  "angularObjects": {
+    "2CBT92NCW:shared_process": [],
+    "2C93HXU5P:shared_process": [],
+    "2CBNQ6XZR:shared_process": [],
+    "2CAFG23YE:shared_process": [],
+    "2C9M3G39W:shared_process": [],
+    "2C8W5GH9T:shared_process": [],
+    "2CAVQV2J4:shared_process": [],
+    "2CATPAD4A:shared_process": [],
+    "2CBKZSVWZ:shared_process": [],
+    "2C8TXDMV9:shared_process": [],
+    "2C9H73EYD:shared_process": [],
+    "2CA3VTVCH:shared_process": [],
+    "2CACE14BJ:shared_process": [],
+    "2CB8U1GH5:shared_process": [],
+    "2CA8HC69Y:shared_process": [],
+    "2CAS8QBA7:shared_process": [],
+    "2C8S56UJT:shared_process": [],
+    "2CC1DMD9G:shared_process": [],
+    "2CB4DEF2N:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
